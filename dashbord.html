@@ -1,0 +1,2958 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>BreakOut Dashboard</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+
+    font-family:'Segoe UI',sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f2027,
+            #203a43,
+            #2c5364
+        );
+
+    color:#fff;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+
+    width:100%;
+
+    padding:30px 20px 20px;
+
+    text-align:center;
+
+}
+
+#project-name{
+
+    font-size:3rem;
+
+    color:#00ffcc;
+
+    letter-spacing:5px;
+
+    text-shadow:
+
+        0 0 5px #00ffcc,
+
+        0 0 10px #00ffcc,
+
+        0 0 20px #00ffcc,
+
+        0 0 30px #00d4ff,
+
+        0 0 40px #00d4ff;
+
+    animation:
+        slidePulse 2s infinite alternate;
+
+}
+
+@keyframes slidePulse{
+
+    0%{
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+    100%{
+        transform:
+            translateY(-6px)
+            scale(1.04);
+    }
+
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.container{
+
+    width:94%;
+
+    max-width:1450px;
+
+    margin:0 auto 40px;
+
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section{
+
+    width:100%;
+
+    background:
+        rgba(0,0,0,.40);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    border:
+        1px solid
+        rgba(0,255,204,.10);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,255,204,.18);
+
+    backdrop-filter:blur(12px);
+
+}
+
+.section h2{
+
+    color:#00ffcc;
+
+    text-shadow:
+        0 0 8px #00ffcc;
+
+    margin-bottom:20px;
+
+    font-size:1.5rem;
+
+}
+
+
+/* =========================================
+   ORDERS TOP BUTTON
+========================================= */
+
+.delete-all{
+
+    background:
+        linear-gradient(
+            45deg,
+            #ff3333,
+            #ff7777
+        );
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:12px 18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-bottom:20px;
+
+    transition:.3s;
+
+}
+
+.delete-all:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(255,60,60,.3);
+
+}
+
+
+/* =========================================
+   ORDERS GRID
+========================================= */
+
+.orders-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(320px,1fr)
+        );
+
+    gap:20px;
+
+}
+
+
+/* =========================================
+   ORDER CARD
+========================================= */
+
+.order-card{
+
+    width:100%;
+
+    min-width:0;
+
+    background:
+        rgba(255,255,255,.065);
+
+    border:
+        1px solid
+        rgba(0,255,204,.22);
+
+    border-radius:22px;
+
+    padding:20px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.18);
+
+    transition:.3s;
+
+}
+
+.order-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:
+        rgba(0,255,204,.45);
+
+}
+
+
+/* =========================================
+   ORDER HEADER
+========================================= */
+
+.order-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:15px;
+
+}
+
+.order-user{
+
+    color:#00ffcc;
+
+    font-size:1.15rem;
+
+    font-weight:bold;
+
+    overflow-wrap:anywhere;
+
+}
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:.75rem;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+.status-pending{
+
+    background:
+        rgba(255,193,7,.13);
+
+    color:#ffc107;
+
+    border:
+        1px solid #ffc107;
+
+}
+
+.status-completed{
+
+    background:
+        rgba(0,255,100,.13);
+
+    color:#00ff88;
+
+    border:
+        1px solid #00ff88;
+
+}
+
+
+/* =========================================
+   ORDER INFO
+========================================= */
+
+.order-info{
+
+    color:#ddd;
+
+    line-height:1.8;
+
+    font-size:.92rem;
+
+    overflow-wrap:anywhere;
+
+    margin-bottom:15px;
+
+}
+
+
+/* =========================================
+   ITEMS
+========================================= */
+
+.items-title{
+
+    color:#00ffcc;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+
+.item-card{
+
+    background:
+        rgba(0,0,0,.25);
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:15px;
+
+    padding:13px;
+
+    margin-bottom:10px;
+
+    min-width:0;
+
+}
+
+.item-name{
+
+    color:#fff;
+
+    font-weight:bold;
+
+    font-size:.98rem;
+
+    overflow-wrap:anywhere;
+
+}
+
+.item-details{
+
+    color:#bbb;
+
+    font-size:.88rem;
+
+    margin-top:5px;
+
+    line-height:1.6;
+
+    overflow-wrap:anywhere;
+
+}
+
+.item-note{
+
+    margin-top:8px;
+
+    padding:9px;
+
+    background:
+        rgba(0,255,204,.07);
+
+    border-radius:10px;
+
+    color:#00ffcc;
+
+    font-size:.84rem;
+
+    line-height:1.5;
+
+    overflow-wrap:anywhere;
+
+}
+
+
+/* =========================================
+   TOTAL
+========================================= */
+
+.order-total{
+
+    margin-top:15px;
+
+    padding-top:15px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.1);
+
+    line-height:1.8;
+
+}
+
+.total{
+
+    color:#00ffcc;
+
+    font-size:1.25rem;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button{
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:12px 16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-family:inherit;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.complete-btn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #00ffcc,
+            #00d4ff
+        );
+
+    color:#000;
+
+}
+
+.delete-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #ff4b4b,
+            #ff7777
+        );
+
+    color:#fff;
+
+}
+
+
+/* =========================================
+   TOP UP GRID
+========================================= */
+
+.topup-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(300px,1fr)
+        );
+
+    gap:20px;
+
+}
+
+
+/* =========================================
+   TOP UP CARD
+========================================= */
+
+.topup-card{
+
+    background:
+        rgba(255,255,255,.065);
+
+    border:
+        1px solid
+        rgba(0,255,204,.22);
+
+    border-radius:22px;
+
+    padding:20px;
+
+    min-width:0;
+
+}
+
+.topup-card h3{
+
+    color:#00ffcc;
+
+    margin-bottom:15px;
+
+    font-size:1.15rem;
+
+    overflow-wrap:anywhere;
+
+}
+
+.topup-info{
+
+    color:#ddd;
+
+    line-height:1.9;
+
+    font-size:.92rem;
+
+    overflow-wrap:anywhere;
+
+}
+
+.topup-amount{
+
+    color:#00ffcc;
+
+    font-size:1.35rem;
+
+    font-weight:bold;
+
+}
+
+.proof-link{
+
+    display:block;
+
+    margin-top:15px;
+
+    color:#00d4ff;
+
+    text-decoration:underline;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================================
+   APPROVE / REJECT
+========================================= */
+
+.approve-btn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #00ff99,
+            #00ffcc
+        );
+
+    color:#000;
+
+}
+
+.reject-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #ff4b4b,
+            #ff7777
+        );
+
+    color:#fff;
+
+}
+
+.approved{
+
+    color:#00ff88;
+
+}
+
+.rejected{
+
+    color:#ff6666;
+
+}
+
+
+/* =========================================
+   USERS GRID
+========================================= */
+
+.users-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(280px,1fr)
+        );
+
+    gap:20px;
+
+}
+
+
+/* =========================================
+   USER CARD
+========================================= */
+
+.user-card{
+
+    background:
+        rgba(255,255,255,.065);
+
+    padding:20px;
+
+    border-radius:22px;
+
+    border:
+        1px solid
+        rgba(0,255,204,.20);
+
+    min-width:0;
+
+}
+
+.user-card h3{
+
+    color:#00ffcc;
+
+    margin-bottom:12px;
+
+    overflow-wrap:anywhere;
+
+}
+
+.user-card > div{
+
+    color:#ddd;
+
+    line-height:1.7;
+
+    overflow-wrap:anywhere;
+
+}
+
+.user-wallet{
+
+    color:#00ffcc !important;
+
+    font-size:1.25rem;
+
+    font-weight:bold;
+
+    margin-top:10px;
+
+}
+
+
+.wallet-input{
+
+    width:100%;
+
+    padding:13px;
+
+    margin-top:15px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:14px;
+
+    font-size:1rem;
+
+}
+
+
+.add-wallet-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #00ffcc,
+            #00d4ff
+        );
+
+    color:#000;
+
+}
+
+
+.user-delete{
+
+    width:100%;
+
+    margin-top:10px;
+
+    background:#ff4b4b;
+
+    color:#fff;
+
+}
+
+
+/* =========================================
+   EMPTY / LOADING
+========================================= */
+
+.empty{
+
+    width:100%;
+
+    text-align:center;
+
+    padding:30px 15px;
+
+    color:#aaa;
+
+}
+
+.loading{
+
+    width:100%;
+
+    text-align:center;
+
+    padding:30px 15px;
+
+    color:#00ffcc;
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+#toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:25px;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    max-width:
+        calc(100% - 30px);
+
+    width:max-content;
+
+    background:
+        linear-gradient(
+            45deg,
+            #00ffcc,
+            #00d4ff
+        );
+
+    color:#000;
+
+    padding:14px 20px;
+
+    border-radius:25px;
+
+    font-weight:bold;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+    z-index:9999;
+
+    text-align:center;
+
+}
+
+#toast.show{
+
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media(max-width:900px){
+
+    .container{
+
+        width:95%;
+
+    }
+
+    .orders-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+    .topup-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+    .users-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:600px){
+
+    body{
+
+        font-size:14px;
+
+    }
+
+    .header{
+
+        padding:
+            22px
+            12px
+            15px;
+
+    }
+
+    #project-name{
+
+        font-size:2rem;
+
+        letter-spacing:3px;
+
+    }
+
+    .container{
+
+        width:
+            calc(100% - 20px);
+
+        margin:
+            0 auto 25px;
+
+    }
+
+    .section{
+
+        padding:16px;
+
+        border-radius:20px;
+
+        margin-bottom:18px;
+
+    }
+
+    .section h2{
+
+        font-size:1.25rem;
+
+        margin-bottom:15px;
+
+    }
+
+    .delete-all{
+
+        width:100%;
+
+        padding:13px;
+
+        margin-bottom:15px;
+
+    }
+
+    /* one card per row */
+
+    .orders-grid{
+
+        grid-template-columns:1fr;
+
+        gap:14px;
+
+    }
+
+    .topup-grid{
+
+        grid-template-columns:1fr;
+
+        gap:14px;
+
+    }
+
+    .users-grid{
+
+        grid-template-columns:1fr;
+
+        gap:14px;
+
+    }
+
+    .order-card{
+
+        padding:16px;
+
+        border-radius:18px;
+
+    }
+
+    .order-header{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+    .order-user{
+
+        font-size:1.05rem;
+
+    }
+
+    .status{
+
+        font-size:.72rem;
+
+    }
+
+    .order-info{
+
+        font-size:.88rem;
+
+    }
+
+    .item-card{
+
+        padding:11px;
+
+    }
+
+    .item-name{
+
+        font-size:.94rem;
+
+    }
+
+    .item-details{
+
+        font-size:.82rem;
+
+    }
+
+    .item-note{
+
+        font-size:.8rem;
+
+    }
+
+    .topup-card{
+
+        padding:16px;
+
+        border-radius:18px;
+
+    }
+
+    .topup-card h3{
+
+        font-size:1.05rem;
+
+    }
+
+    .topup-info{
+
+        font-size:.86rem;
+
+    }
+
+    .user-card{
+
+        padding:16px;
+
+        border-radius:18px;
+
+    }
+
+    button{
+
+        min-height:46px;
+
+        font-size:.92rem;
+
+    }
+
+    .complete-btn,
+    .delete-btn,
+    .approve-btn,
+    .reject-btn,
+    .add-wallet-btn,
+    .user-delete{
+
+        min-height:48px;
+
+    }
+
+    .wallet-input{
+
+        min-height:46px;
+
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media(max-width:380px){
+
+    #project-name{
+
+        font-size:1.7rem;
+
+        letter-spacing:2px;
+
+    }
+
+    .container{
+
+        width:
+            calc(100% - 14px);
+
+    }
+
+    .section{
+
+        padding:13px;
+
+    }
+
+    .order-card,
+    .topup-card,
+    .user-card{
+
+        padding:13px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="toast"></div>
+
+
+<div class="header">
+
+    <h1 id="project-name">
+        BREAKOUT
+    </h1>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =====================================
+     ORDERS
+===================================== -->
+
+<div class="section">
+
+    <h2>
+        📦 Orders
+    </h2>
+
+
+    <button
+        class="delete-all"
+        id="deleteAllOrders"
+    >
+        Delete All Orders
+    </button>
+
+
+    <div
+        id="ordersGrid"
+        class="orders-grid"
+    >
+
+        <div class="loading">
+            Loading orders...
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     WALLET TOP UPS
+===================================== -->
+
+<div class="section">
+
+    <h2>
+        💰 Wallet Top-Up Requests
+    </h2>
+
+
+    <div
+        id="topupGrid"
+        class="topup-grid"
+    >
+
+        <div class="loading">
+            Loading wallet requests...
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     USERS
+===================================== -->
+
+<div class="section">
+
+    <h2>
+        👥 Users
+    </h2>
+
+
+    <div
+        id="usersGrid"
+        class="users-grid"
+    >
+
+        <div class="loading">
+            Loading users...
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script type="module">
+
+
+/* =========================================
+   FIREBASE
+========================================= */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    deleteDoc,
+    updateDoc,
+    getDoc,
+    runTransaction,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAubjKdiEqfDpW-tc94-l-AI7lbPs7IU04",
+
+    authDomain:
+        "breakout-d5088.firebaseapp.com",
+
+    projectId:
+        "breakout-d5088",
+
+    storageBucket:
+        "breakout-d5088.appspot.com",
+
+    messagingSenderId:
+        "57071720148",
+
+    appId:
+        "1:57071720148:web:1a628bbb31191d11efcd41"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getFirestore(app);
+
+
+const ADMIN_EMAIL =
+    "breakout2163@gmail.com";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const ordersGrid =
+    document.getElementById(
+        "ordersGrid"
+    );
+
+const topupGrid =
+    document.getElementById(
+        "topupGrid"
+    );
+
+const usersGrid =
+    document.getElementById(
+        "usersGrid"
+    );
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function showToast(text){
+
+    toast.textContent =
+        text;
+
+    toast.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2500
+    );
+
+}
+
+
+/* =========================================
+   AUTH
+========================================= */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if(!user){
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if(
+            user.email !==
+            ADMIN_EMAIL
+        ){
+
+            const userSnap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
+                );
+
+
+            if(
+                !userSnap.exists() ||
+                userSnap.data().role !==
+                "admin"
+            ){
+
+                alert(
+                    "Access denied."
+                );
+
+                window.location.href =
+                    "home.html";
+
+                return;
+
+            }
+
+        }
+
+
+        loadOrders();
+
+        loadTopUps();
+
+        loadUsers();
+
+    }
+);
+
+
+/* =========================================
+   LOAD ORDERS
+========================================= */
+
+async function loadOrders(){
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "orders"
+                )
+            );
+
+
+        ordersGrid.innerHTML = "";
+
+
+        if(snapshot.empty){
+
+            ordersGrid.innerHTML =
+                `<div class="empty">
+                    No orders yet.
+                </div>`;
+
+            return;
+
+        }
+
+
+        snapshot.forEach(
+            (orderSnap) => {
+
+                const order =
+                    orderSnap.data();
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "order-card";
+
+
+                let itemsHTML = "";
+
+
+                const items =
+                    Array.isArray(
+                        order.items
+                    )
+                    ? order.items
+                    : [];
+
+
+                items.forEach(
+                    (item) => {
+
+                        itemsHTML += `
+
+                        <div class="item-card">
+
+                            <div class="item-name">
+
+                                ${escapeHTML(
+                                    item.name ||
+                                    "Item"
+                                )}
+
+                            </div>
+
+                            <div class="item-details">
+
+                                Qty:
+                                ${item.qty || 1}
+
+                                ${
+                                    item.flavor
+                                    ? " | Flavor: " +
+                                      escapeHTML(
+                                          item.flavor
+                                      )
+                                    : ""
+                                }
+
+                            </div>
+
+                            <div class="item-details">
+
+                                Price:
+                                ${
+                                    item.totalPrice ||
+                                    item.price ||
+                                    0
+                                }
+                                EGP
+
+                            </div>
+
+                            ${
+                                item.note
+                                ? `
+                                    <div class="item-note">
+                                        📝
+                                        ${escapeHTML(
+                                            item.note
+                                        )}
+                                    </div>
+                                  `
+                                : ""
+                            }
+
+                        </div>
+
+                        `;
+
+                    }
+                );
+
+
+                const status =
+                    order.status ||
+                    "pending";
+
+
+                const statusClass =
+                    status === "completed"
+                    ? "status-completed"
+                    : "status-pending";
+
+
+                card.innerHTML = `
+
+                    <div class="order-header">
+
+                        <div class="order-user">
+
+                            👤
+                            ${escapeHTML(
+                                order.username ||
+                                "Unknown User"
+                            )}
+
+                        </div>
+
+                        <div class="status ${statusClass}">
+
+                            ${escapeHTML(
+                                status.toUpperCase()
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-info">
+
+                        📞
+                        ${escapeHTML(
+                            String(
+                                order.phone ||
+                                "N/A"
+                            )
+                        )}
+
+                        <br>
+
+                        🧾 Receipt:
+                        ${escapeHTML(
+                            order.receiptCode ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="items-title">
+
+                        🥤 Order Items
+
+                    </div>
+
+
+                    ${itemsHTML}
+
+
+                    <div class="order-total">
+
+                        Total:
+
+                        <span class="total">
+
+                            ${order.totalPrice || 0}
+                            EGP
+
+                        </span>
+
+                        <br>
+
+                        ⭐ Points:
+                        ${order.totalPoints || 0}
+
+                    </div>
+
+                `;
+
+
+                if(
+                    status !==
+                    "completed"
+                ){
+
+                    const completeBtn =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    completeBtn.className =
+                        "complete-btn";
+
+
+                    completeBtn.textContent =
+                        "Order Completed 📱";
+
+
+                    completeBtn.onclick =
+                        () =>
+                            completeOrder(
+                                orderSnap.id,
+                                order
+                            );
+
+
+                    card.appendChild(
+                        completeBtn
+                    );
+
+                }
+
+
+                const deleteBtn =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteBtn.className =
+                    "delete-btn";
+
+
+                deleteBtn.textContent =
+                    "Delete Order";
+
+
+                deleteBtn.onclick =
+                    () =>
+                        deleteOrder(
+                            orderSnap.id
+                        );
+
+
+                card.appendChild(
+                    deleteBtn
+                );
+
+
+                ordersGrid.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        ordersGrid.innerHTML = `
+
+            <div class="empty">
+
+                Failed to load orders.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   COMPLETE ORDER
+========================================= */
+
+async function completeOrder(
+    orderId,
+    order
+){
+
+    try{
+
+        await updateDoc(
+            doc(
+                db,
+                "orders",
+                orderId
+            ),
+            {
+
+                status:
+                    "completed",
+
+                completedAt:
+                    new Date()
+                    .toISOString()
+
+            }
+        );
+
+
+        let phone =
+            String(
+                order.phone ||
+                ""
+            ).replace(
+                /\D/g,
+                ""
+            );
+
+
+        if(
+            phone.startsWith("0")
+        ){
+
+            phone =
+                "20" +
+                phone.substring(1);
+
+        }
+
+
+        const message =
+
+`مرحباً ${order.username || ""} 👋
+
+طلبك من BreakOut أصبح جاهزاً للاستلام ✅
+
+رقم الطلب:
+${order.receiptCode || ""}
+
+الإجمالي:
+${order.totalPrice || 0} EGP
+
+شكراً لاختيارك BreakOut ❤️`;
+
+
+        if(phone){
+
+            const whatsappURL =
+                "https://wa.me/" +
+                phone +
+                "?text=" +
+                encodeURIComponent(
+                    message
+                );
+
+
+            window.open(
+                whatsappURL,
+                "_blank"
+            );
+
+        }
+
+
+        showToast(
+            "Order completed successfully."
+        );
+
+
+        loadOrders();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Failed to complete order."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE ORDER
+========================================= */
+
+async function deleteOrder(
+    orderId
+){
+
+    if(
+        !confirm(
+            "Delete this order?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await deleteDoc(
+            doc(
+                db,
+                "orders",
+                orderId
+            )
+        );
+
+
+        showToast(
+            "Order deleted."
+        );
+
+
+        loadOrders();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Failed to delete order."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE ALL
+========================================= */
+
+document
+.getElementById(
+    "deleteAllOrders"
+)
+.addEventListener(
+    "click",
+    async () => {
+
+        if(
+            !confirm(
+                "Delete ALL orders?"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            const snapshot =
+                await getDocs(
+                    collection(
+                        db,
+                        "orders"
+                    )
+                );
+
+
+            for(
+                const orderSnap
+                of snapshot.docs
+            ){
+
+                await deleteDoc(
+                    orderSnap.ref
+                );
+
+            }
+
+
+            showToast(
+                "All orders deleted."
+            );
+
+
+            loadOrders();
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            showToast(
+                "Failed to delete all orders."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOAD TOP UPS
+========================================= */
+
+async function loadTopUps(){
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "topUpRequests"
+                )
+            );
+
+
+        topupGrid.innerHTML = "";
+
+
+        if(snapshot.empty){
+
+            topupGrid.innerHTML =
+                `<div class="empty">
+                    No wallet requests yet.
+                </div>`;
+
+            return;
+
+        }
+
+
+        const requests =
+            snapshot.docs
+            .map(
+                snap => ({
+                    id:
+                        snap.id,
+
+                    ...snap.data()
+                })
+            )
+            .sort(
+                (a,b) => {
+
+                    const aTime =
+                        a.createdAt?.seconds ||
+                        0;
+
+                    const bTime =
+                        b.createdAt?.seconds ||
+                        0;
+
+                    return bTime - aTime;
+
+                }
+            );
+
+
+        requests.forEach(
+            (request) => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "topup-card";
+
+
+                const status =
+                    request.status ||
+                    "pending";
+
+
+                const createdDate =
+                    request.createdAt?.toDate
+                    ? request.createdAt
+                        .toDate()
+                        .toLocaleString()
+                    : "N/A";
+
+
+                card.innerHTML = `
+
+                    <h3>
+
+                        💰
+                        ${escapeHTML(
+                            request.username ||
+                            "Unknown User"
+                        )}
+
+                    </h3>
+
+
+                    <div class="topup-info">
+
+                        📧
+                        ${escapeHTML(
+                            request.email ||
+                            "N/A"
+                        )}
+
+                        <br>
+
+                        📞
+                        ${escapeHTML(
+                            String(
+                                request.phone ||
+                                "N/A"
+                            )
+                        )}
+
+                        <br>
+
+                        💳 Method:
+                        <strong>
+                            ${escapeHTML(
+                                request.method ||
+                                "N/A"
+                            )}
+                        </strong>
+
+                        <br>
+
+                        💵 Amount:
+
+                        <span class="topup-amount">
+
+                            ${request.amount || 0}
+                            EGP
+
+                        </span>
+
+                        <br>
+
+                        📅 Date:
+                        ${escapeHTML(
+                            createdDate
+                        )}
+
+                        <br>
+
+                        📌 Status:
+
+                        <strong class="${
+                            status === "approved"
+                            ? "approved"
+                            :
+                            status === "rejected"
+                            ? "rejected"
+                            : ""
+                        }">
+
+                            ${escapeHTML(
+                                status.toUpperCase()
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                `;
+
+
+                /*
+                 * Image is intentionally NOT
+                 * stored in Firebase.
+                 *
+                 * Proof image is sent to Telegram.
+                 */
+
+
+                if(
+                    status ===
+                    "pending"
+                ){
+
+                    const approveBtn =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    approveBtn.className =
+                        "approve-btn";
+
+
+                    approveBtn.textContent =
+                        "Approve ✅";
+
+
+                    approveBtn.onclick =
+                        () =>
+                            approveTopUp(
+                                request.id
+                            );
+
+
+                    card.appendChild(
+                        approveBtn
+                    );
+
+
+                    const rejectBtn =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    rejectBtn.className =
+                        "reject-btn";
+
+
+                    rejectBtn.textContent =
+                        "Reject ❌";
+
+
+                    rejectBtn.onclick =
+                        () =>
+                            rejectTopUp(
+                                request.id
+                            );
+
+
+                    card.appendChild(
+                        rejectBtn
+                    );
+
+                }
+
+
+                topupGrid.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        topupGrid.innerHTML = `
+
+            <div class="empty">
+
+                Failed to load wallet requests.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   APPROVE TOP UP
+========================================= */
+
+async function approveTopUp(
+    requestId
+){
+
+    if(
+        !confirm(
+            "Approve this payment and add the amount to the user's wallet?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await runTransaction(
+            db,
+            async (transaction) => {
+
+                const requestRef =
+                    doc(
+                        db,
+                        "topUpRequests",
+                        requestId
+                    );
+
+
+                const requestSnap =
+                    await transaction.get(
+                        requestRef
+                    );
+
+
+                if(
+                    !requestSnap.exists()
+                ){
+
+                    throw new Error(
+                        "Payment request not found."
+                    );
+
+                }
+
+
+                const request =
+                    requestSnap.data();
+
+
+                if(
+                    request.status !==
+                    "pending"
+                ){
+
+                    throw new Error(
+                        "This request has already been processed."
+                    );
+
+                }
+
+
+                const userRef =
+                    doc(
+                        db,
+                        "users",
+                        request.uid
+                    );
+
+
+                const userSnap =
+                    await transaction.get(
+                        userRef
+                    );
+
+
+                if(
+                    !userSnap.exists()
+                ){
+
+                    throw new Error(
+                        "User not found."
+                    );
+
+                }
+
+
+                const user =
+                    userSnap.data();
+
+
+                const currentWallet =
+                    Number(
+                        user.wallet || 0
+                    );
+
+
+                const amount =
+                    Number(
+                        request.amount || 0
+                    );
+
+
+                if(
+                    amount <= 0
+                ){
+
+                    throw new Error(
+                        "Invalid amount."
+                    );
+
+                }
+
+
+                transaction.update(
+                    userRef,
+                    {
+
+                        wallet:
+                            currentWallet +
+                            amount
+
+                    }
+                );
+
+
+                transaction.update(
+                    requestRef,
+                    {
+
+                        status:
+                            "approved",
+
+                        approvedAt:
+                            serverTimestamp(),
+
+                        approvedBy:
+                            auth.currentUser.email ||
+                            ""
+
+                    }
+                );
+
+            }
+        );
+
+
+        showToast(
+            "Approved. Money added to wallet ✅"
+        );
+
+
+        loadTopUps();
+
+        loadUsers();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Approve failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   REJECT TOP UP
+========================================= */
+
+async function rejectTopUp(
+    requestId
+){
+
+    if(
+        !confirm(
+            "Reject this payment request?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const requestRef =
+            doc(
+                db,
+                "topUpRequests",
+                requestId
+            );
+
+
+        const requestSnap =
+            await getDoc(
+                requestRef
+            );
+
+
+        if(
+            !requestSnap.exists()
+        ){
+
+            throw new Error(
+                "Payment request not found."
+            );
+
+        }
+
+
+        const request =
+            requestSnap.data();
+
+
+        if(
+            request.status !==
+            "pending"
+        ){
+
+            throw new Error(
+                "This request has already been processed."
+            );
+
+        }
+
+
+        await updateDoc(
+            requestRef,
+            {
+
+                status:
+                    "rejected",
+
+                rejectedAt:
+                    serverTimestamp(),
+
+                rejectedBy:
+                    auth.currentUser.email ||
+                    ""
+
+            }
+        );
+
+
+        showToast(
+            "Payment rejected ❌"
+        );
+
+
+        loadTopUps();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Reject failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD USERS
+========================================= */
+
+async function loadUsers(){
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "users"
+                )
+            );
+
+
+        usersGrid.innerHTML = "";
+
+
+        if(snapshot.empty){
+
+            usersGrid.innerHTML =
+                `<div class="empty">
+                    No users found.
+                </div>`;
+
+            return;
+
+        }
+
+
+        snapshot.forEach(
+            (userSnap) => {
+
+                const user =
+                    userSnap.data();
+
+
+                const uid =
+                    userSnap.id;
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "user-card";
+
+
+                card.innerHTML = `
+
+                    <h3>
+
+                        👤
+                        ${escapeHTML(
+                            user.username ||
+                            "Unknown"
+                        )}
+
+                    </h3>
+
+
+                    <div>
+
+                        📧
+                        ${escapeHTML(
+                            user.email ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div>
+
+                        📞
+                        ${escapeHTML(
+                            String(
+                                user.phone ||
+                                "N/A"
+                            )
+                        )}
+
+                    </div>
+
+
+                    <div class="user-wallet">
+
+                        💰 Wallet:
+                        ${Number(
+                            user.wallet ||
+                            0
+                        ).toFixed(2)}
+                        EGP
+
+                    </div>
+
+
+                    <div>
+
+                        ⭐ Points:
+                        ${user.points || 0}
+
+                    </div>
+
+
+                    <input
+
+                        class="wallet-input"
+
+                        type="number"
+
+                        min="1"
+
+                        placeholder="Amount to add"
+
+                        id="wallet-${uid}"
+
+                    >
+
+
+                    <button
+
+                        class="add-wallet-btn"
+
+                        data-uid="${uid}"
+
+                    >
+
+                        Add Wallet
+
+                    </button>
+
+
+                    <button
+
+                        class="user-delete"
+
+                        data-uid="${uid}"
+
+                    >
+
+                        Delete User
+
+                    </button>
+
+                `;
+
+
+                usersGrid.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        /* ADD WALLET */
+
+        document
+        .querySelectorAll(
+            ".add-wallet-btn"
+        )
+        .forEach(
+            btn => {
+
+                btn.onclick =
+                    async () => {
+
+                        const uid =
+                            btn.dataset.uid;
+
+
+                        const input =
+                            document.getElementById(
+                                "wallet-" +
+                                uid
+                            );
+
+
+                        const amount =
+                            Number(
+                                input.value
+                            );
+
+
+                        if(
+                            !amount ||
+                            amount <= 0
+                        ){
+
+                            showToast(
+                                "Enter a valid amount."
+                            );
+
+                            return;
+
+                        }
+
+
+                        try{
+
+                            const userRef =
+                                doc(
+                                    db,
+                                    "users",
+                                    uid
+                                );
+
+
+                            const userSnap =
+                                await getDoc(
+                                    userRef
+                                );
+
+
+                            if(
+                                !userSnap.exists()
+                            ){
+
+                                throw new Error(
+                                    "User not found."
+                                );
+
+                            }
+
+
+                            const user =
+                                userSnap.data();
+
+
+                            const currentWallet =
+                                Number(
+                                    user.wallet ||
+                                    0
+                                );
+
+
+                            await updateDoc(
+                                userRef,
+                                {
+
+                                    wallet:
+                                        currentWallet +
+                                        amount
+
+                                }
+                            );
+
+
+                            showToast(
+                                "Wallet updated."
+                            );
+
+
+                            loadUsers();
+
+                        }
+
+                        catch(error){
+
+                            console.error(
+                                error
+                            );
+
+                            showToast(
+                                "Failed to update wallet."
+                            );
+
+                        }
+
+                    };
+
+            }
+        );
+
+
+        /* DELETE USER */
+
+        document
+        .querySelectorAll(
+            ".user-delete"
+        )
+        .forEach(
+            btn => {
+
+                btn.onclick =
+                    async () => {
+
+                        const uid =
+                            btn.dataset.uid;
+
+
+                        if(
+                            !confirm(
+                                "Delete this user?"
+                            )
+                        ){
+
+                            return;
+
+                        }
+
+
+                        try{
+
+                            await deleteDoc(
+                                doc(
+                                    db,
+                                    "users",
+                                    uid
+                                )
+                            );
+
+
+                            showToast(
+                                "User deleted."
+                            );
+
+
+                            loadUsers();
+
+                        }
+
+                        catch(error){
+
+                            console.error(
+                                error
+                            );
+
+                            showToast(
+                                "Failed to delete user."
+                            );
+
+                        }
+
+                    };
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        usersGrid.innerHTML = `
+
+            <div class="empty">
+
+                Failed to load users.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

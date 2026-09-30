@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Breakout - Cart</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    min-height:100vh;
+    padding:30px 20px;
+}
+
+
+/* =========================
+   PROJECT NAME
+========================= */
+
+#project-name{
+
+    font-size:3rem;
+
+    color:#00ffcc;
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    text-shadow:
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc,
+        0 0 20px #00ffcc,
+        0 0 30px #00d4ff,
+        0 0 40px #00d4ff;
+
+    letter-spacing:5px;
+
+    animation:slidePulse 2s infinite alternate;
+}
+
+
+@keyframes slidePulse{
+
+    0%{
+        transform:translateY(0) scale(1);
+    }
+
+    50%{
+        transform:translateY(-5px) scale(1.03);
+    }
+
+    100%{
+        transform:translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================
+   USER CARD
+========================= */
+
+#user-card{
+
+    max-width:900px;
+
+    margin:0 auto 20px auto;
+
+    background:rgba(0,0,0,.4);
+
+    padding:20px;
+
+    border-radius:25px;
+
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.25);
+
+    text-align:center;
+}
+
+
+#user-name{
+
+    color:#00ffcc;
+
+    margin-bottom:10px;
+
+    text-shadow:0 0 5px #00ffcc;
+}
+
+
+.user-info{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    flex-wrap:wrap;
+}
+
+
+.user-info span{
+
+    color:#fff;
+
+}
+
+
+.user-info strong{
+
+    color:#00ffcc;
+}
+
+
+/* =========================
+   CART
+========================= */
+
+.cart-container{
+
+    max-width:900px;
+
+    margin:auto;
+
+    background:rgba(0,0,0,.4);
+
+    padding:30px;
+
+    border-radius:25px;
+
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.4);
+}
+
+
+.cart-title{
+
+    text-align:center;
+
+    color:#00ffcc;
+
+    margin-bottom:25px;
+
+    text-shadow:0 0 5px #00ffcc;
+}
+
+
+.cart-item{
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(0,255,204,.2);
+
+    padding:18px;
+
+    margin-bottom:15px;
+
+    border-radius:18px;
+
+    transition:.3s;
+}
+
+
+.cart-item:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 5px 20px rgba(0,255,204,.2);
+}
+
+
+.cart-item h5{
+
+    color:#00ffcc;
+
+    margin-bottom:10px;
+}
+
+
+.cart-item p{
+
+    margin:5px 0;
+
+    color:#fff;
+}
+
+
+.qty-input{
+
+    width:70px;
+
+    padding:7px;
+
+    border:none;
+
+    border-radius:10px;
+
+    text-align:center;
+}
+
+
+.remove-btn{
+
+    margin-top:10px;
+
+    padding:8px 18px;
+
+    border:none;
+
+    border-radius:20px;
+
+    background:#ff4d4d;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+
+.remove-btn:hover{
+
+    background:#ff0000;
+
+    transform:scale(1.05);
+}
+
+
+/* =========================
+   TOTAL
+========================= */
+
+#total-price{
+
+    text-align:center;
+
+    font-size:1.5rem;
+
+    font-weight:bold;
+
+    color:#00ffcc;
+
+    margin-top:25px;
+
+    text-shadow:0 0 5px #00ffcc;
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+#checkout-btn{
+
+    display:block;
+
+    width:100%;
+
+    max-width:400px;
+
+    margin:25px auto 0 auto;
+
+    padding:13px;
+
+    border-radius:25px;
+
+    border:none;
+
+    background:linear-gradient(
+        45deg,
+        #00ffcc,
+        #00d4ff
+    );
+
+    color:#000;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+#checkout-btn:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.5);
+}
+
+
+#checkout-btn:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================
+   RECEIPT
+========================= */
+
+#receipt-box{
+
+    max-width:900px;
+
+    margin:25px auto 0 auto;
+
+    background:rgba(0,0,0,.4);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.25);
+
+    white-space:pre-line;
+
+    color:#fff;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+#back-btn{
+
+    display:block;
+
+    margin:25px auto;
+
+    padding:10px 25px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:rgba(0,0,0,.4);
+
+    color:#00ffcc;
+
+    border:1px solid #00ffcc;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+
+#back-btn:hover{
+
+    background:#00ffcc;
+
+    color:#000;
+
+    transform:scale(1.05);
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+
+    position:fixed;
+
+    bottom:30px;
+
+    right:30px;
+
+    background:linear-gradient(
+        45deg,
+        #00ffcc,
+        #00d4ff
+    );
+
+    color:#000;
+
+    padding:14px 24px;
+
+    border-radius:30px;
+
+    opacity:0;
+
+    transition:.4s;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.5);
+
+    z-index:9999;
+}
+
+
+#toast.show{
+
+    opacity:1;
+}
+
+
+@media(max-width:600px){
+
+    #project-name{
+        font-size:2.2rem;
+    }
+
+    .cart-container{
+        padding:20px;
+    }
+
+    .user-info{
+        flex-direction:column;
+        gap:8px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="toast"></div>
+
+
+<h1 id="project-name">
+    BREAKOUT
+</h1>
+
+
+<div id="user-card">
+
+    <h3 id="user-name">
+        Loading...
+    </h3>
+
+    <div class="user-info">
+
+        <span>
+            Points:
+            <strong id="user-points">0</strong>
+        </span>
+
+        <span>
+            Wallet:
+            <strong id="user-balance">0 EGY</strong>
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<div class="cart-container">
+
+    <h2 class="cart-title">
+        🛒 Your Cart
+    </h2>
+
+
+    <div id="cart-container"></div>
+
+
+    <div id="total-price">
+        Total: 0 EGY
+    </div>
+
+
+    <button id="checkout-btn">
+        Checkout
+    </button>
+
+</div>
+
+
+<div id="receipt-box"></div>
+
+
+<button id="back-btn">
+    ← Back
+</button>
+
+
+
+<script type="module">
+
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    updateDoc,
+    addDoc,
+    collection
+}
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAubjKdiEqfDpW-tc94-l-AI7lbPs7IU04",
+
+    authDomain:
+        "breakout-d5088.firebaseapp.com",
+
+    projectId:
+        "breakout-d5088"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getFirestore(app);
+
+
+
+const cartContainer =
+    document.getElementById("cart-container");
+
+const totalPriceEl =
+    document.getElementById("total-price");
+
+const receiptBox =
+    document.getElementById("receipt-box");
+
+const checkoutBtn =
+    document.getElementById("checkout-btn");
+
+const toast =
+    document.getElementById("toast");
+
+
+const userNameEl =
+    document.getElementById("user-name");
+
+const userPointsEl =
+    document.getElementById("user-points");
+
+const userBalanceEl =
+    document.getElementById("user-balance");
+
+
+
+let userData;
+
+let currentUser;
+
+let sentTelegram = false;
+
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(msg,error=false){
+
+    toast.textContent = msg;
+
+    toast.style.background =
+        error
+        ?
+        "linear-gradient(45deg,#ff4d4d,#ff0000)"
+        :
+        "linear-gradient(45deg,#00ffcc,#00d4ff)";
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+
+/* =========================
+   RECEIPT
+========================= */
+
+function generateReceiptCode(){
+
+    return "RC-" +
+        Math.floor(
+            1000 +
+            Math.random()*9000
+        );
+
+}
+
+
+
+/* =========================
+   TELEGRAM
+   نفس البوت القديم
+========================= */
+
+async function sendToTelegram(msg){
+
+    if(sentTelegram) return;
+
+    const token=
+        "8260462424:AAHnSEjh9OKxJ-BVHgZUkL7f-ZomyH--Rdo";
+
+    const chatId=
+        "8319188377";
+
+    const url =
+        `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`;
+
+    try{
+
+        await fetch(url);
+
+        sentTelegram = true;
+
+    }catch(err){
+
+        console.error(err);
+
+        showToast(
+            "Failed to send Telegram message",
+            true
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   RENDER CART
+========================= */
+
+async function renderCart(user){
+
+    currentUser = user;
+
+
+    const ref =
+        doc(
+            db,
+            "users",
+            user.uid
+        );
+
+
+    const snap =
+        await getDoc(ref);
+
+
+    if(!snap.exists()){
+
+        showToast(
+            "User data not found",
+            true
+        );
+
+        return;
+
+    }
+
+
+    userData =
+        snap.data();
+
+
+    userNameEl.textContent =
+        "User: " +
+        (userData.username || "User");
+
+
+    userPointsEl.textContent =
+        userData.points || 0;
+
+
+    userBalanceEl.textContent =
+        (userData.wallet || 0) +
+        " EGY";
+
+
+    const cart =
+        userData.cart || [];
+
+
+    cartContainer.innerHTML = "";
+
+
+    let total = 0;
+
+
+    if(cart.length === 0){
+
+        cartContainer.innerHTML = `
+
+            <div style="
+                text-align:center;
+                color:#00ffcc;
+                padding:30px;
+            ">
+
+                🛒 Cart is empty
+
+            </div>
+
+        `;
+
+        totalPriceEl.textContent =
+            "Total: 0 EGY";
+
+        checkoutBtn.disabled = true;
+
+        return;
+
+    }
+
+
+    checkoutBtn.disabled = false;
+
+
+    cart.forEach((item,index)=>{
+
+        total +=
+            Number(item.totalPrice || 0);
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "cart-item";
+
+
+        div.innerHTML = `
+
+            <h5>
+                ${item.name || "Item"}
+            </h5>
+
+            ${
+                item.flavor
+                ?
+                `<p>Flavor: ${item.flavor}</p>`
+                :
+                ""
+            }
+
+            <p>
+                Qty:
+                ${item.qty || 1}
+            </p>
+
+            ${
+                item.notes
+                ?
+                `<p>Notes: ${item.notes}</p>`
+                :
+                ""
+            }
+
+            <p>
+                Total:
+                ${item.totalPrice || 0}
+                EGY
+            </p>
+
+            <button class="remove-btn">
+                Remove
+            </button>
+
+        `;
+
+
+        div.querySelector(
+            ".remove-btn"
+        ).onclick = async ()=>{
+
+            const newCart =
+                cart.filter(
+                    (_,i)=>i !== index
+                );
+
+
+            await updateDoc(
+                ref,
+                {
+                    cart:newCart
+                }
+            );
+
+
+            showToast("Removed");
+
+
+            renderCart(user);
+
+        };
+
+
+        cartContainer.appendChild(div);
+
+    });
+
+
+    totalPriceEl.textContent =
+        "Total: " +
+        total +
+        " EGY";
+
+
+    checkoutBtn.onclick =
+        async ()=>{
+
+            await checkout(
+                user,
+                userData,
+                cart,
+                total,
+                ref
+            );
+
+        };
+
+}
+
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+async function checkout(
+    user,
+    data,
+    cart,
+    total,
+    ref
+){
+
+    if(cart.length === 0){
+
+        showToast(
+            "Cart empty",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if(
+        Number(data.wallet || 0)
+        <
+        Number(total)
+    ){
+
+        showToast(
+            "رصيدك غير كافي 💳❌",
+            true
+        );
+
+        return;
+
+    }
+
+
+    checkoutBtn.disabled = true;
+
+
+    try{
+
+
+        let earnedPoints =
+            Number(total);
+
+
+        let newPoints =
+            Number(data.points || 0)
+            +
+            earnedPoints;
+
+
+        let bonusEGY =
+            Math.floor(
+                newPoints / 2500
+            ) * 25;
+
+
+        let remainingPoints =
+            newPoints % 2500;
+
+
+        const receiptCode =
+            generateReceiptCode();
+
+
+        let receipt =
+            `User: ${data.username}\n`;
+
+
+        receipt +=
+            `Receipt: ${receiptCode}\n`;
+
+
+        cart.forEach(i=>{
+
+            receipt +=
+                `${i.name} (${i.flavor || ""}) - Qty: ${i.qty} - ${i.totalPrice} EGY\n`;
+
+        });
+
+
+        receipt +=
+            `Total: ${total} EGY\n`;
+
+
+        receipt +=
+            `Points Earned: ${earnedPoints}\n`;
+
+
+        if(bonusEGY > 0){
+
+            receipt +=
+                `🎁 Bonus Wallet: +${bonusEGY} EGY\n`;
+
+        }
+
+
+
+        /* =========================
+           SAVE ORDER
+        ========================= */
+
+        await addDoc(
+            collection(db,"orders"),
+            {
+
+                username:
+                    data.username || "",
+
+                phone:
+                    String(data.phone || ""),
+
+                items:
+                    cart,
+
+                totalPrice:
+                    total,
+
+                totalPoints:
+                    earnedPoints,
+
+                receiptCode:
+                    receiptCode,
+
+                status:
+                    "pending",
+
+                createdAt:
+                    new Date().toISOString()
+
+            }
+        );
+
+
+
+        /* =========================
+           TELEGRAM
+        ========================= */
+
+        await sendToTelegram(receipt);
+
+
+
+        /* =========================
+           UPDATE USER
+        ========================= */
+
+        await updateDoc(
+            ref,
+            {
+
+                cart:[],
+
+                wallet:
+                    Number(data.wallet || 0)
+                    -
+                    Number(total)
+                    +
+                    bonusEGY,
+
+                points:
+                    remainingPoints
+
+            }
+        );
+
+
+        receiptBox.textContent =
+            receipt;
+
+
+        showToast(
+            "Checkout successful 🎉"
+        );
+
+
+        await renderCart(user);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "Checkout failed",
+            true
+        );
+
+        checkoutBtn.disabled = false;
+
+    }
+
+}
+
+
+
+/* =========================
+   BACK
+========================= */
+
+document
+.getElementById("back-btn")
+.onclick = ()=>{
+
+    window.location.href =
+        "home.html";
+
+};
+
+
+
+/* =========================
+   AUTH
+========================= */
+
+onAuthStateChanged(
+    auth,
+    user=>{
+
+        if(user){
+
+            renderCart(user);
+
+        }else{
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

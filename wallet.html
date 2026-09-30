@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BreakOut Wallet</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    min-height:100vh;
+}
+
+.container{
+    width:92%;
+    max-width:900px;
+    margin:40px auto;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+#project-name{
+    font-size:3rem;
+    color:#00ffcc;
+    letter-spacing:5px;
+    text-shadow:
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc,
+        0 0 20px #00ffcc,
+        0 0 30px #00d4ff,
+        0 0 40px #00d4ff;
+    animation:slidePulse 2s infinite alternate;
+}
+
+@keyframes slidePulse{
+    0%{
+        transform:translateY(0) scale(1);
+    }
+    50%{
+        transform:translateY(-7px) scale(1.05);
+    }
+    100%{
+        transform:translateY(0) scale(1);
+    }
+}
+
+.card{
+    background:rgba(0,0,0,.4);
+    padding:25px;
+    border-radius:25px;
+    margin-bottom:25px;
+    box-shadow:
+        0 10px 30px rgba(0,255,204,.25),
+        inset 0 0 20px rgba(255,255,255,.03);
+    backdrop-filter:blur(10px);
+}
+
+.card h2{
+    color:#00ffcc;
+    text-shadow:0 0 5px #00ffcc;
+    margin-top:0;
+}
+
+.user-info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.info-box{
+    background:rgba(255,255,255,.08);
+    padding:18px;
+    border-radius:18px;
+    border:1px solid rgba(0,255,204,.2);
+}
+
+.info-box span{
+    display:block;
+    color:#aaa;
+    margin-bottom:8px;
+}
+
+.info-box strong{
+    color:#00ffcc;
+    font-size:1.3rem;
+}
+
+label{
+    display:block;
+    color:#00ffcc;
+    font-weight:bold;
+    margin-top:15px;
+    margin-bottom:8px;
+}
+
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:15px;
+    font-size:1rem;
+    background:#fff;
+    color:#111;
+}
+
+input[type="file"]{
+    cursor:pointer;
+}
+
+.payment-number{
+    display:none;
+    margin-top:15px;
+    padding:18px;
+    text-align:center;
+    background:rgba(0,255,204,.08);
+    border:1px solid #00ffcc;
+    border-radius:15px;
+}
+
+.payment-number strong{
+    display:block;
+    margin-top:8px;
+    color:#00ffcc;
+    font-size:1.5rem;
+    letter-spacing:2px;
+}
+
+#preview{
+    display:none;
+    width:100%;
+    max-height:350px;
+    object-fit:contain;
+    margin-top:15px;
+    border-radius:15px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:20px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(45deg,#00ffcc,#00d4ff);
+    color:#000;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+    box-shadow:0 10px 30px rgba(0,255,204,.5);
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.logout{
+    background:linear-gradient(45deg,#ff4b4b,#ff7777);
+    color:#fff;
+}
+
+.pending{
+    display:none;
+    background:rgba(255,193,7,.12);
+    border:1px solid #ffc107;
+    color:#ffc107;
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+    margin-bottom:25px;
+    line-height:1.8;
+}
+
+.message{
+    display:none;
+    padding:15px;
+    margin-top:15px;
+    border-radius:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.success{
+    background:rgba(0,255,150,.12);
+    border:1px solid #00ff99;
+    color:#00ff99;
+}
+
+.error{
+    background:rgba(255,50,50,.12);
+    border:1px solid #ff5555;
+    color:#ff7777;
+}
+
+.loading{
+    text-align:center;
+    padding:40px;
+    color:#00ffcc;
+    font-size:1.2rem;
+}
+
+@media(max-width:600px){
+    #project-name{
+        font-size:2.2rem;
+    }
+
+    .container{
+        width:95%;
+        margin:20px auto;
+    }
+
+    .card{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1 id="project-name">BREAKOUT</h1>
+    </div>
+
+    <div id="loading" class="loading">
+        Loading Wallet...
+    </div>
+
+    <div id="mainContent" style="display:none;">
+
+        <!-- WALLET -->
+        <div class="card">
+
+            <h2>💳 My Wallet</h2>
+
+            <div class="user-info">
+
+                <div class="info-box">
+                    <span>Username</span>
+                    <strong id="username">-</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Wallet Balance</span>
+                    <strong>
+                        <span id="wallet">0</span> EGP
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Points</span>
+                    <strong id="points">0</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING -->
+        <div id="pendingBox" class="pending">
+
+            ⏳ Your payment request is
+            <strong>Pending</strong>.
+
+            <br>
+
+            Please wait until the administrator
+            approves or rejects your payment.
+
+        </div>
+
+
+        <!-- TOP UP -->
+        <div id="topupCard" class="card">
+
+            <h2>💰 Add Money</h2>
+
+            <label>
+                Payment Method
+            </label>
+
+            <select id="method">
+
+                <option value="">
+                    Select Payment Method
+                </option>
+
+                <option value="Vodafone Cash">
+                    Vodafone Cash
+                </option>
+
+                <option value="InstaPay">
+                    InstaPay
+                </option>
+
+            </select>
+
+
+            <div
+                id="paymentNumber"
+                class="payment-number"
+            >
+
+                Send money to:
+
+                <strong id="numberText">
+                    -
+                </strong>
+
+            </div>
+
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                min="100"
+                placeholder="Minimum 100 EGP"
+            >
+
+
+            <label>
+                Transfer Screenshot
+            </label>
+
+            <input
+                type="file"
+                id="proof"
+                accept="image/*"
+            >
+
+
+            <img
+                id="preview"
+                alt="Transfer Preview"
+            >
+
+
+            <button id="submitBtn">
+                Submit Payment Request
+            </button>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+        </div>
+
+
+        <button
+            id="logoutBtn"
+            class="logout"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+
+/* =========================
+   FIREBASE
+========================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAubjKdiEqfDpW-tc94-l-AI7lbPs7IU04",
+
+    authDomain:
+        "breakout-d5088.firebaseapp.com",
+
+    projectId:
+        "breakout-d5088",
+
+    storageBucket:
+        "breakout-d5088.appspot.com",
+
+    messagingSenderId:
+        "57071720148",
+
+    appId:
+        "1:57071720148:web:1a628bbb31191d11efcd41"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const loading =
+    document.getElementById("loading");
+
+const mainContent =
+    document.getElementById("mainContent");
+
+const usernameEl =
+    document.getElementById("username");
+
+const walletEl =
+    document.getElementById("wallet");
+
+const pointsEl =
+    document.getElementById("points");
+
+const methodEl =
+    document.getElementById("method");
+
+const paymentNumber =
+    document.getElementById("paymentNumber");
+
+const numberText =
+    document.getElementById("numberText");
+
+const amountEl =
+    document.getElementById("amount");
+
+const proofEl =
+    document.getElementById("proof");
+
+const preview =
+    document.getElementById("preview");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const pendingBox =
+    document.getElementById("pendingBox");
+
+const topupCard =
+    document.getElementById("topupCard");
+
+const message =
+    document.getElementById("message");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+
+let currentUser = null;
+let userData = null;
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+
+    message.style.display =
+        "block";
+
+}
+
+
+/* =========================
+   PAYMENT METHOD
+========================= */
+
+methodEl.addEventListener(
+    "change",
+    () => {
+
+        if(
+            methodEl.value ===
+            "Vodafone Cash"
+        ){
+
+            numberText.textContent =
+                "01031133529";
+
+            paymentNumber.style.display =
+                "block";
+
+        }
+
+        else if(
+            methodEl.value ===
+            "InstaPay"
+        ){
+
+            numberText.textContent =
+                "01060505501";
+
+            paymentNumber.style.display =
+                "block";
+
+        }
+
+        else{
+
+            paymentNumber.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+proofEl.addEventListener(
+    "change",
+    () => {
+
+        const file =
+            proofEl.files[0];
+
+        if(!file){
+
+            preview.style.display =
+                "none";
+
+            return;
+        }
+
+
+        if(
+            !file.type.startsWith("image/")
+        ){
+
+            showMessage(
+                "Please select an image.",
+                "error"
+            );
+
+            proofEl.value = "";
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            (event) => {
+
+                preview.src =
+                    event.target.result;
+
+                preview.style.display =
+                    "block";
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+
+/* =========================
+   LOAD USER
+========================= */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if(!user){
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        currentUser =
+            user;
+
+
+        try{
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const userSnap =
+                await getDoc(
+                    userRef
+                );
+
+
+            if(
+                !userSnap.exists()
+            ){
+
+                loading.textContent =
+                    "User data not found.";
+
+                return;
+            }
+
+
+            userData =
+                userSnap.data();
+
+
+            usernameEl.textContent =
+                userData.username ||
+                user.email ||
+                "User";
+
+
+            walletEl.textContent =
+                Number(
+                    userData.wallet || 0
+                ).toFixed(2);
+
+
+            pointsEl.textContent =
+                userData.points || 0;
+
+
+            /* CHECK PENDING */
+
+            const pendingQuery =
+                query(
+                    collection(
+                        db,
+                        "topUpRequests"
+                    ),
+
+                    where(
+                        "uid",
+                        "==",
+                        currentUser.uid
+                    ),
+
+                    where(
+                        "status",
+                        "==",
+                        "pending"
+                    )
+                );
+
+
+            const pendingSnap =
+                await getDocs(
+                    pendingQuery
+                );
+
+
+            if(
+                !pendingSnap.empty
+            ){
+
+                pendingBox.style.display =
+                    "block";
+
+                topupCard.style.display =
+                    "none";
+
+            }
+
+
+            loading.style.display =
+                "none";
+
+            mainContent.style.display =
+                "block";
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            loading.style.display =
+                "none";
+
+            mainContent.style.display =
+                "block";
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================
+   SUBMIT PAYMENT
+========================= */
+
+submitBtn.addEventListener(
+    "click",
+    async () => {
+
+        if(
+            !currentUser ||
+            !userData
+        ){
+
+            showMessage(
+                "User data is not ready.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const method =
+            methodEl.value;
+
+        const amount =
+            Number(
+                amountEl.value
+            );
+
+        const file =
+            proofEl.files[0];
+
+
+        /* VALIDATION */
+
+        if(!method){
+
+            showMessage(
+                "Please select payment method.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if(
+            !amount ||
+            amount < 100
+        ){
+
+            showMessage(
+                "Minimum amount is 100 EGP.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if(!file){
+
+            showMessage(
+                "Please upload transfer screenshot.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if(
+            !file.type.startsWith("image/")
+        ){
+
+            showMessage(
+                "Please upload an image.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try{
+
+            submitBtn.disabled =
+                true;
+
+            submitBtn.textContent =
+                "Sending...";
+
+
+            /* =========================
+               CHECK PENDING
+            ========================= */
+
+            const pendingQuery =
+                query(
+                    collection(
+                        db,
+                        "topUpRequests"
+                    ),
+
+                    where(
+                        "uid",
+                        "==",
+                        currentUser.uid
+                    ),
+
+                    where(
+                        "status",
+                        "==",
+                        "pending"
+                    )
+                );
+
+
+            const pendingSnap =
+                await getDocs(
+                    pendingQuery
+                );
+
+
+            if(
+                !pendingSnap.empty
+            ){
+
+                showMessage(
+                    "You already have a pending request.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* =========================
+               CREATE FIRESTORE REQUEST
+            ========================= */
+
+            const requestRef =
+                await addDoc(
+                    collection(
+                        db,
+                        "topUpRequests"
+                    ),
+                    {
+
+                        uid:
+                            currentUser.uid,
+
+                        username:
+                            userData.username ||
+                            "",
+
+                        email:
+                            currentUser.email ||
+                            "",
+
+                        phone:
+                            String(
+                                userData.phone ||
+                                ""
+                            ),
+
+                        amount:
+                            amount,
+
+                        method:
+                            method,
+
+                        status:
+                            "pending",
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+            /* =========================
+               TELEGRAM ONLY
+            ========================= */
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "chat_id",
+                "8319188377"
+            );
+
+
+            formData.append(
+                "photo",
+                file
+            );
+
+
+            formData.append(
+                "caption",
+
+`💰 New Wallet Payment
+
+User: ${userData.username || currentUser.email}
+
+Phone: ${userData.phone || "N/A"}
+
+Amount: ${amount} EGY
+
+Method: ${method}
+
+Request ID: ${requestRef.id}
+
+Status: PENDING`
+            );
+
+
+            const botToken =
+                "8536551204:AAFpUIBNT7NiDOkC-ZurYhAxWEXcsZ6zzQg";
+
+
+            const telegramURL =
+                `https://api.telegram.org/bot${botToken}/sendPhoto`;
+
+
+            const telegramResponse =
+                await fetch(
+                    telegramURL,
+                    {
+                        method:"POST",
+                        body:formData
+                    }
+                );
+
+
+            if(
+                !telegramResponse.ok
+            ){
+
+                throw new Error(
+                    "Failed to send payment proof to Telegram."
+                );
+
+            }
+
+
+            /* =========================
+               SUCCESS
+            ========================= */
+
+            showMessage(
+                "Payment request sent successfully. Waiting for admin approval.",
+                "success"
+            );
+
+
+            pendingBox.style.display =
+                "block";
+
+            topupCard.style.display =
+                "none";
+
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            showMessage(
+                "Failed to submit payment: " +
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally{
+
+            submitBtn.disabled =
+                false;
+
+            submitBtn.textContent =
+                "Submit Payment Request";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+        try{
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
